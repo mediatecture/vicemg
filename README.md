@@ -89,7 +89,13 @@ configurable in Settings). To have it start automatically:
 - **System Settings > General > Login Items** → add `VicEmergency Monitor.app`, or
 - Drag `VicEmergency Monitor.app` into your Dock for one-click access.
 
-Use the pin icon in the toolbar to keep the window floating above other apps.
+Use the pin icon in the toolbar to keep the window floating above other apps. Pinning
+also collapses the window into a **mini view** (about 280 pt wide): a one-line status
+("3 nearby" / "All clear", red when something is in range), up to three compact rows
+(type icon, name, distance; click one to open it on VicEmergency), and a short
+attribution footer. It shows on every Space. Click the pin again to get the full
+window back at its previous size, or use **⌘⇧P** / View › Mini Window (Keep on Top).
+Settings are only available in the full window.
 
 ## Settings
 

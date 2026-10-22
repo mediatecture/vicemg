@@ -22,6 +22,11 @@ struct VicEmergencyMonitorApp: App {
         .windowResizability(.contentSize)
         .commands {
             CommandGroup(replacing: .newItem) {}
+            // A menu route to the mini / full window switch, in case the pin button is hard to reach.
+            CommandGroup(after: .toolbar) {
+                Toggle("Mini Window (Keep on Top)", isOn: $settings.keepOnTop)
+                    .keyboardShortcut("p", modifiers: [.command, .shift])
+            }
         }
     }
 }
