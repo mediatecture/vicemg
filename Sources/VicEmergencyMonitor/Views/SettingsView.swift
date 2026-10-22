@@ -107,10 +107,22 @@ struct SettingsView: View {
                     HStack {
                         Button("Test alarm") { AlarmPlayer.shared.play() }
                         Button("Stop") { AlarmPlayer.shared.stop() }
-                        Spacer()
+                    }
+                }
+                .padding(8)
+            }
+
+            GroupBox("Notifications") {
+                VStack(alignment: .leading, spacing: 8) {
+                    HStack {
                         Button("Send test notification") { sendTestNotification() }
                             .disabled(fetcher.incidents.isEmpty)
+                        Button("Open Notification Settings…") { NotificationManager.shared.openSystemNotificationSettings() }
                     }
+                    Text("Not seeing banners? In System Settings › Notifications › VicEmergency Monitor, turn off \"Summarise notifications\" (macOS otherwise holds alerts for a later digest). Also check that no Focus mode is on, and that notifications aren't set to Off while mirroring or sharing the display.")
+                        .font(.caption2)
+                        .foregroundStyle(.secondary)
+                        .fixedSize(horizontal: false, vertical: true)
                 }
                 .padding(8)
             }
@@ -158,7 +170,7 @@ struct SettingsView: View {
 
         let nearest = fetcher.incidents.min { (distanceKm($0) ?? .greatestFiniteMagnitude) < (distanceKm($1) ?? .greatestFiniteMagnitude) }
         guard let incident = nearest else { return }
-        NotificationManager.shared.notify(incident: incident, distanceKm: distanceKm(incident), origin: origin)
+        NotificationManager.shared.notify(incident: incident, distanceKm: distanceKm(incident), origin: origin, unique: true)
     }
 
     private var statusText: some View {

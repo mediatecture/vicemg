@@ -12,6 +12,13 @@ final class NotificationManager: NSObject, UNUserNotificationCenterDelegate {
         super.init()
     }
 
+    /// Opens the Notifications pane of System Settings.
+    func openSystemNotificationSettings() {
+        if let url = URL(string: "x-apple.systempreferences:com.apple.Notifications-Settings.extension") {
+            NSWorkspace.shared.open(url)
+        }
+    }
+
     func configure() {
         UNUserNotificationCenter.current().delegate = self
         UNUserNotificationCenter.current().requestAuthorization(options: [.alert, .sound, .badge]) { _, error in
@@ -24,7 +31,7 @@ final class NotificationManager: NSObject, UNUserNotificationCenterDelegate {
     /// Posts a notification with a map thumbnail and a type icon. The siren (if any)
     /// is played separately by the caller, so this never waits on the map download.
     /// `origin` is the user's location, shown as a blue dot on the map when in frame.
-    func notify(incident: Incident, distanceKm: Double?, origin: CLLocationCoordinate2D?, playSound: Bool = true) {
+    func notify(incident: Incident, distanceKm: Double?, origin: CLLocationCoordinate2D?, playSound: Bool = true, unique: Bool = false) {
         let content = UNMutableNotificationContent()
         let emoji = incident.kind.emoji
         if incident.isOfficialWarning {
@@ -54,7 +61,9 @@ final class NotificationManager: NSObject, UNUserNotificationCenterDelegate {
             }
 
             let request = UNNotificationRequest(
-                identifier: "incident-\(incident.id)",
+                // Re-posting an identifier replaces the earlier notification instead of showing a
+                // new one, so test notifications get a fresh identifier each time.
+                identifier: unique ? "test-\(UUID().uuidString)" : "incident-\(incident.id)",
                 content: content,
                 trigger: nil
             )
