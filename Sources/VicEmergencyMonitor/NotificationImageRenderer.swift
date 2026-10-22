@@ -72,6 +72,13 @@ enum NotificationImageRenderer {
                 rect.fill()
             }
 
+            let fire = fireStyle(for: incident)
+            if let fire {
+                // Tint the whole map so the colour reads even when the thumbnail is tiny.
+                fire.fill.withAlphaComponent(0.22).setFill()
+                rect.fill(using: .sourceOver)
+            }
+
             let center = CGPoint(x: rect.midX, y: rect.midY)
             // MapKit's snapshot points have a bottom-left origin on macOS, but this
             // image is drawn top-left, so flip Y.
@@ -91,11 +98,58 @@ enum NotificationImageRenderer {
             if let distanceKm {
                 drawPill(String(format: "%.0f km away", distanceKm), in: rect)
             }
+            if let fire {
+                drawFireFrame(fire, in: rect)
+            }
             return true
         }
     }
 
+    /// Red / amber / yellow treatment for fire-type items. Nil for everything else,
+    /// which keeps the severity-coloured badge on a plain map.
+    private struct FireStyle {
+        let fill: NSColor
+        let ink: NSColor   // text and icon colour that stays legible on `fill`
+        let label: String
+    }
+
+    private static func fireStyle(for incident: Incident) -> FireStyle? {
+        switch incident.fireStage {
+        case .active:
+            return FireStyle(fill: NSColor(calibratedRed: 0.89, green: 0.16, blue: 0.14, alpha: 1), ink: .white, label: "ACTIVE FIRE")
+        case .contained:
+            return FireStyle(fill: NSColor(calibratedRed: 0.98, green: 0.62, blue: 0.04, alpha: 1), ink: NSColor(calibratedRed: 0.23, green: 0.13, blue: 0, alpha: 1), label: "CONTAINED FIRE")
+        case .planned:
+            return FireStyle(fill: NSColor(calibratedRed: 1.0, green: 0.84, blue: 0.0, alpha: 1), ink: NSColor(calibratedRed: 0.23, green: 0.13, blue: 0, alpha: 1), label: "PLANNED BURN")
+        case nil:
+            return nil
+        }
+    }
+
+    /// Thick coloured border plus a label strip across the top.
+    private static func drawFireFrame(_ style: FireStyle, in rect: CGRect) {
+        let border: CGFloat = 14
+        style.fill.setStroke()
+        let frame = NSBezierPath(rect: rect.insetBy(dx: border / 2, dy: border / 2))
+        frame.lineWidth = border
+        frame.stroke()
+
+        let strip = CGRect(x: 0, y: 0, width: rect.width, height: 40)
+        style.fill.setFill()
+        strip.fill()
+
+        let attributes: [NSAttributedString.Key: Any] = [
+            .font: NSFont.systemFont(ofSize: 19, weight: .heavy),
+            .foregroundColor: style.ink,
+            .kern: 1.5
+        ]
+        let text = NSAttributedString(string: style.label, attributes: attributes)
+        let size = text.size()
+        text.draw(at: CGPoint(x: (rect.width - size.width) / 2, y: (strip.height - size.height) / 2 + 1))
+    }
+
     private static func badgeColor(for incident: Incident) -> NSColor {
+        if let fire = fireStyle(for: incident) { return fire.fill }
         switch incident.severity {
         case .critical: return .systemRed
         case .high: return .systemOrange
@@ -121,7 +175,8 @@ enum NotificationImageRenderer {
         badgeColor(for: incident).setFill()
         NSBezierPath(ovalIn: CGRect(x: point.x - inner, y: point.y - inner, width: inner * 2, height: inner * 2)).fill()
 
-        if let symbol = tintedSymbol(incident.kind.symbolName, pointSize: 28, color: .white) {
+        let glyphColor = fireStyle(for: incident)?.ink ?? .white
+        if let symbol = tintedSymbol(incident.kind.symbolName, pointSize: 28, color: glyphColor) {
             let s = symbol.size
             symbol.draw(
                 in: CGRect(x: point.x - s.width / 2, y: point.y - s.height / 2, width: s.width, height: s.height),
@@ -152,7 +207,7 @@ enum NotificationImageRenderer {
         ]
         let string = NSAttributedString(string: text, attributes: attributes)
         let textSize = string.size()
-        let pill = CGRect(x: 12, y: rect.maxY - textSize.height - 22, width: textSize.width + 20, height: textSize.height + 10)
+        let pill = CGRect(x: 22, y: rect.maxY - (textSize.height + 10) - 26, width: textSize.width + 20, height: textSize.height + 10)
         NSColor.black.withAlphaComponent(0.65).setFill()
         NSBezierPath(roundedRect: pill, xRadius: pill.height / 2, yRadius: pill.height / 2).fill()
         string.draw(at: CGPoint(x: pill.minX + 10, y: pill.minY + 5))

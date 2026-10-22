@@ -15,6 +15,9 @@ final class AppSettings: ObservableObject {
     /// When true, the siren only sounds for official warnings and active fires;
     /// other new nearby incidents get a normal notification sound instead.
     @Published var alarmOnlyForSevere: Bool { didSet { save() } }
+    /// Emergency types (`Incident.Kind` raw values) the user has silenced. Stored as the
+    /// muted set so a type added later defaults to making sound.
+    @Published var mutedSoundKinds: Set<String> { didSet { save() } }
 
     private let defaults = UserDefaults.standard
 
@@ -30,6 +33,19 @@ final class AppSettings: ObservableObject {
         keepOnTop = (d.object(forKey: "keepOnTop") as? Bool) ?? false
         alarmEnabled = (d.object(forKey: "alarmEnabled") as? Bool) ?? true
         alarmOnlyForSevere = (d.object(forKey: "alarmOnlyForSevere") as? Bool) ?? true
+        mutedSoundKinds = Set((d.array(forKey: "mutedSoundKinds") as? [String]) ?? [])
+    }
+
+    func isSoundEnabled(for kind: Incident.Kind) -> Bool {
+        !mutedSoundKinds.contains(kind.rawValue)
+    }
+
+    func setSound(_ enabled: Bool, for kind: Incident.Kind) {
+        if enabled {
+            mutedSoundKinds.remove(kind.rawValue)
+        } else {
+            mutedSoundKinds.insert(kind.rawValue)
+        }
     }
 
     private func save() {
@@ -43,5 +59,6 @@ final class AppSettings: ObservableObject {
         defaults.set(keepOnTop, forKey: "keepOnTop")
         defaults.set(alarmEnabled, forKey: "alarmEnabled")
         defaults.set(alarmOnlyForSevere, forKey: "alarmOnlyForSevere")
+        defaults.set(Array(mutedSoundKinds), forKey: "mutedSoundKinds")
     }
 }

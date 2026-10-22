@@ -171,24 +171,32 @@ struct ContentView: View {
         .frame(maxWidth: .infinity, maxHeight: .infinity)
     }
 
+    /// Attribution required by Emergency Management Victoria's emergency data notice:
+    /// name the source, link the notice, and show when the feed was last updated.
+    /// https://www.emv.vic.gov.au/responsibilities/victorias-warning-system/emergency-data
+    private static let attribution: AttributedString = {
+        let markdown = "Data: State of Victoria, Australia, under [CC BY 3.0 AU](https://creativecommons.org/licenses/by/3.0/au/). [Emergency data notice](https://www.emv.vic.gov.au/responsibilities/victorias-warning-system/emergency-data)"
+        return (try? AttributedString(markdown: markdown)) ?? AttributedString("Data: State of Victoria, Australia")
+    }()
+
     private var footer: some View {
-        VStack(spacing: 2) {
+        VStack(alignment: .leading, spacing: 3) {
             if let error = fetcher.errorMessage {
                 Text(error)
-                    .font(.caption2)
                     .foregroundStyle(.red)
             }
-            HStack {
-                if let updated = fetcher.lastUpdated {
-                    Text("Updated \(updated.formatted(date: .omitted, time: .standard))")
-                }
-                Spacer()
-                Text("Live EMV feed (unofficial) — click an item to open it on VicEmergency")
-                    .lineLimit(1)
+            if let updated = fetcher.lastUpdated {
+                Text("Last updated from feed: \(updated.formatted(date: .abbreviated, time: .standard))")
+            } else {
+                Text("Waiting for first update from feed…")
             }
-            .font(.caption2)
-            .foregroundStyle(.secondary)
+            Text(Self.attribution)
+            Text("Use more than one source in an emergency; this app is not a substitute for official VicEmergency alerts. Click an item to open it on VicEmergency.")
         }
+        .font(.caption2)
+        .foregroundStyle(.secondary)
+        .fixedSize(horizontal: false, vertical: true)
+        .frame(maxWidth: .infinity, alignment: .leading)
         .padding(8)
         .background(.bar)
     }

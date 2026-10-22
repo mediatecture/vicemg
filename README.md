@@ -23,6 +23,19 @@ The feed carries two kinds of entries:
 Clicking a row opens that exact incident or warning on emergency.vic.gov.au
 (`#!/warning/<id>/moreinfo` or `#!/incident/<id>`).
 
+## Attribution and terms
+
+Data is provided by the State of Victoria, Australia under a
+[Creative Commons Attribution 3.0 Australia](https://creativecommons.org/licenses/by/3.0/au/)
+licence, subject to Emergency Management Victoria's
+[Emergency data notice](https://www.emv.vic.gov.au/responsibilities/victorias-warning-system/emergency-data).
+The notice requires that the source is identified as *State of Victoria, Australia*,
+that the notice is linked, and that apps showing warning data display the last date
+and time an update was received. The app's footer does all three, and repeats the
+notice's advice to use more than one source in an emergency. The licence excludes
+Victorian Government logos and branding, none of which this app uses. The data is
+provided "as is" with no warranty.
+
 ## Alerts
 
 - **Red alert state** — the header and window border turn red whenever at least one
@@ -32,12 +45,19 @@ Clicking a row opens that exact incident or warning on emergency.vic.gov.au
   map thumbnail centred on the incident (with a blue dot for your location when it's
   in frame and a distance label), a badge icon for the emergency type (fire, tree,
   flood, wind, road, building, …) coloured by severity, and a matching emoji in the
-  title. If the map can't be fetched, the badge is shown on a plain background.
+  title. Fire-type items get a stronger treatment: a coloured tint, border and label
+  strip, plus a matching badge. **Red** = active fire (or an official fire warning),
+  **amber** = contained / controlled / safe fire, **yellow** = planned burn.
+  If the map can't be fetched, the badge is shown on a plain background.
   "Send test notification" in Settings previews one for the nearest current item.
 - **Alarm sound** — a synthesized two-tone siren plays alongside the notification.
   In Settings you can turn it off, restrict it to official warnings and active
   fires (default), or have it sound for every new nearby item. "Test alarm" plays it
   on demand. It plays through your Mac's currently selected output device.
+- **Sound per emergency type** — Settings has a tick box for each type (fire, planned
+  burn, tree down, flood, wind, storm / weather, road / rescue, building, other).
+  Unticked types are completely silent: no siren and no notification chime, though
+  the notification itself still appears. All types are on by default.
 
 ## Location
 
@@ -76,7 +96,8 @@ Use the pin icon in the toolbar to keep the window floating above other apps.
 - **Location** — device location (via Location Services) or a manual lat/long.
 - **Alert radius** — 5–200 km.
 - **Refresh interval** — 30s / 1m / 2m / 5m.
-- **Alarm** — siren on/off, and whether it's limited to official warnings and active fires.
+- **Sound** — siren on/off, whether it's limited to official warnings and active fires,
+  and which emergency types make sound at all.
 - **Categories** — filter by whichever categories the live feed currently contains
   (Fire, Tree Down, Planned Burn, Met, Advice, …).
 

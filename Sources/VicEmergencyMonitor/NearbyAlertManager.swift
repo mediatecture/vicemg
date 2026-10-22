@@ -23,10 +23,12 @@ final class NearbyAlertManager: ObservableObject {
         for item in nearby where newIDs.contains(item.incident.id) {
             let incident = item.incident
             let isSevere = incident.isOfficialWarning || incident.severity >= .high
-            let alarm = settings.alarmEnabled && (!settings.alarmOnlyForSevere || isSevere)
+            // Types the user has muted get no sound at all: no siren and no chime.
+            let soundAllowed = settings.isSoundEnabled(for: incident.kind)
+            let alarm = soundAllowed && settings.alarmEnabled && (!settings.alarmOnlyForSevere || isSevere)
             soundAlarm = soundAlarm || alarm
             // The siren replaces the default notification chime rather than stacking on it.
-            NotificationManager.shared.notify(incident: incident, distanceKm: item.distanceKm, origin: origin, playSound: !alarm)
+            NotificationManager.shared.notify(incident: incident, distanceKm: item.distanceKm, origin: origin, playSound: soundAllowed && !alarm)
         }
         if soundAlarm {
             AlarmPlayer.shared.play()

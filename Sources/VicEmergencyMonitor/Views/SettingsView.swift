@@ -20,10 +20,27 @@ struct SettingsView: View {
     }
 
     var body: some View {
-        VStack(alignment: .leading, spacing: 16) {
+        VStack(alignment: .leading, spacing: 12) {
             Text("Settings")
                 .font(.title3.weight(.semibold))
 
+            ScrollView {
+                settingsGroups
+                    .padding(.trailing, 12)
+            }
+
+            HStack {
+                Spacer()
+                Button("Done") { dismiss() }
+                    .keyboardShortcut(.defaultAction)
+            }
+        }
+        .padding(20)
+        .frame(width: 440, height: 680)
+    }
+
+    private var settingsGroups: some View {
+        VStack(alignment: .leading, spacing: 16) {
             GroupBox("Location") {
                 VStack(alignment: .leading, spacing: 10) {
                     Toggle("Use this Mac's current location", isOn: $settings.useDeviceLocation)
@@ -99,15 +116,29 @@ struct SettingsView: View {
                 .padding(8)
             }
 
-            GroupBox("Alarm") {
+            GroupBox("Sound") {
                 VStack(alignment: .leading, spacing: 8) {
-                    Toggle("Play alarm sound when a new incident appears nearby", isOn: $settings.alarmEnabled)
-                    Toggle("Only for official warnings and active fires", isOn: $settings.alarmOnlyForSevere)
+                    Toggle("Play siren when a new incident appears nearby", isOn: $settings.alarmEnabled)
+                    Toggle("Siren only for official warnings and active fires", isOn: $settings.alarmOnlyForSevere)
                         .disabled(!settings.alarmEnabled)
                     HStack {
                         Button("Test alarm") { AlarmPlayer.shared.play() }
                         Button("Stop") { AlarmPlayer.shared.stop() }
                     }
+
+                    Divider().padding(.vertical, 2)
+
+                    Text("Make sound for these emergency types")
+                        .font(.subheadline.weight(.medium))
+                    LazyVGrid(columns: [GridItem(.flexible(), alignment: .leading), GridItem(.flexible(), alignment: .leading)], alignment: .leading, spacing: 6) {
+                        ForEach(Incident.Kind.allCases) { kind in
+                            Toggle("\(kind.emoji) \(kind.title)", isOn: soundBinding(for: kind))
+                        }
+                    }
+                    Text("Unticked types are silent: no siren and no notification chime. The notification itself still appears.")
+                        .font(.caption2)
+                        .foregroundStyle(.secondary)
+                        .fixedSize(horizontal: false, vertical: true)
                 }
                 .padding(8)
             }
@@ -145,14 +176,7 @@ struct SettingsView: View {
                 .padding(8)
             }
 
-            HStack {
-                Spacer()
-                Button("Done") { dismiss() }
-                    .keyboardShortcut(.defaultAction)
-            }
         }
-        .padding(20)
-        .frame(width: 420)
     }
 
     /// Sends a real-looking notification for the nearest current incident, so the
@@ -194,6 +218,13 @@ struct SettingsView: View {
         case .restricted: return "Location access restricted"
         default: return "Waiting for location…"
         }
+    }
+
+    private func soundBinding(for kind: Incident.Kind) -> Binding<Bool> {
+        Binding(
+            get: { settings.isSoundEnabled(for: kind) },
+            set: { settings.setSound($0, for: kind) }
+        )
     }
 
     private func binding(for category: String) -> Binding<Bool> {

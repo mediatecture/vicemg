@@ -136,8 +136,24 @@ struct Incident: Identifiable, Hashable {
         self.coordinate = coordinate
     }
 
-    enum Kind {
+    enum Kind: String, CaseIterable, Identifiable {
         case fire, plannedBurn, treeDown, flood, wind, weather, road, building, other
+
+        var id: String { rawValue }
+
+        var title: String {
+            switch self {
+            case .fire: return "Fire"
+            case .plannedBurn: return "Planned burn"
+            case .treeDown: return "Tree down"
+            case .flood: return "Flood"
+            case .wind: return "Wind"
+            case .weather: return "Storm / weather"
+            case .road: return "Road / rescue"
+            case .building: return "Building"
+            case .other: return "Other"
+            }
+        }
 
         var symbolName: String {
             switch self {
@@ -165,6 +181,25 @@ struct Incident: Identifiable, Hashable {
             case .building: return "🏢"
             case .other: return "⚠️"
             }
+        }
+    }
+
+    enum FireStage {
+        case active, contained, planned
+    }
+
+    /// Where a fire-type item sits for the notification thumbnail's red / amber / yellow
+    /// treatment. Anything that isn't a fire is nil. Official fire warnings count as
+    /// active; incidents that are controlled, contained or already marked safe count as
+    /// contained.
+    var fireStage: FireStage? {
+        switch kind {
+        case .plannedBurn:
+            return .planned
+        case .fire:
+            return isOfficialWarning || severityLabel == "Active" ? .active : .contained
+        default:
+            return nil
         }
     }
 
