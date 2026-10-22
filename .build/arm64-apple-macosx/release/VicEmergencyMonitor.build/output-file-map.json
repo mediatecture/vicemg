@@ -4,6 +4,12 @@
     "object": "/Users/nielswouters/Documents/GitHub/vicemg/.build/arm64-apple-macosx/release/VicEmergencyMonitor.build/VicEmergencyMonitor.o",
     "swift-dependencies": "/Users/nielswouters/Documents/GitHub/vicemg/.build/arm64-apple-macosx/release/VicEmergencyMonitor.build/primary.swiftdeps"
   },
+  "/Users/nielswouters/Documents/GitHub/vicemg/Sources/VicEmergencyMonitor/AlarmPlayer.swift": {
+    "object": "/Users/nielswouters/Documents/GitHub/vicemg/.build/arm64-apple-macosx/release/VicEmergencyMonitor.build/AlarmPlayer.swift.o",
+    "swiftmodule": "/Users/nielswouters/Documents/GitHub/vicemg/.build/arm64-apple-macosx/release/VicEmergencyMonitor.build/AlarmPlayer~partial.swiftmodule",
+    "swift-dependencies": "/Users/nielswouters/Documents/GitHub/vicemg/.build/arm64-apple-macosx/release/VicEmergencyMonitor.build/AlarmPlayer.swiftdeps",
+    "diagnostics": "/Users/nielswouters/Documents/GitHub/vicemg/.build/arm64-apple-macosx/release/VicEmergencyMonitor.build/AlarmPlayer.dia"
+  },
   "/Users/nielswouters/Documents/GitHub/vicemg/Sources/VicEmergencyMonitor/App.swift": {
     "object": "/Users/nielswouters/Documents/GitHub/vicemg/.build/arm64-apple-macosx/release/VicEmergencyMonitor.build/App.swift.o",
     "swiftmodule": "/Users/nielswouters/Documents/GitHub/vicemg/.build/arm64-apple-macosx/release/VicEmergencyMonitor.build/App~partial.swiftmodule",
@@ -39,6 +45,12 @@
     "swiftmodule": "/Users/nielswouters/Documents/GitHub/vicemg/.build/arm64-apple-macosx/release/VicEmergencyMonitor.build/NearbyAlertManager~partial.swiftmodule",
     "swift-dependencies": "/Users/nielswouters/Documents/GitHub/vicemg/.build/arm64-apple-macosx/release/VicEmergencyMonitor.build/NearbyAlertManager.swiftdeps",
     "diagnostics": "/Users/nielswouters/Documents/GitHub/vicemg/.build/arm64-apple-macosx/release/VicEmergencyMonitor.build/NearbyAlertManager.dia"
+  },
+  "/Users/nielswouters/Documents/GitHub/vicemg/Sources/VicEmergencyMonitor/NotificationImageRenderer.swift": {
+    "object": "/Users/nielswouters/Documents/GitHub/vicemg/.build/arm64-apple-macosx/release/VicEmergencyMonitor.build/NotificationImageRenderer.swift.o",
+    "swiftmodule": "/Users/nielswouters/Documents/GitHub/vicemg/.build/arm64-apple-macosx/release/VicEmergencyMonitor.build/NotificationImageRenderer~partial.swiftmodule",
+    "swift-dependencies": "/Users/nielswouters/Documents/GitHub/vicemg/.build/arm64-apple-macosx/release/VicEmergencyMonitor.build/NotificationImageRenderer.swiftdeps",
+    "diagnostics": "/Users/nielswouters/Documents/GitHub/vicemg/.build/arm64-apple-macosx/release/VicEmergencyMonitor.build/NotificationImageRenderer.dia"
   },
   "/Users/nielswouters/Documents/GitHub/vicemg/Sources/VicEmergencyMonitor/NotificationManager.swift": {
     "object": "/Users/nielswouters/Documents/GitHub/vicemg/.build/arm64-apple-macosx/release/VicEmergencyMonitor.build/NotificationManager.swift.o",

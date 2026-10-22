@@ -24,6 +24,10 @@
       "inputs" : [
         {
           "kind" : "file",
+          "name" : "/Users/nielswouters/Documents/GitHub/vicemg/Sources/VicEmergencyMonitor/AlarmPlayer.swift"
+        },
+        {
+          "kind" : "file",
           "name" : "/Users/nielswouters/Documents/GitHub/vicemg/Sources/VicEmergencyMonitor/App.swift"
         },
         {
@@ -45,6 +49,10 @@
         {
           "kind" : "file",
           "name" : "/Users/nielswouters/Documents/GitHub/vicemg/Sources/VicEmergencyMonitor/NearbyAlertManager.swift"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/nielswouters/Documents/GitHub/vicemg/Sources/VicEmergencyMonitor/NotificationImageRenderer.swift"
         },
         {
           "kind" : "file",
@@ -79,12 +87,14 @@
       "moduleName" : "VicEmergencyMonitor",
       "moduleOutputPath" : "/Users/nielswouters/Documents/GitHub/vicemg/.build/arm64-apple-macosx/release/Modules/VicEmergencyMonitor.swiftmodule",
       "objects" : [
+        "/Users/nielswouters/Documents/GitHub/vicemg/.build/arm64-apple-macosx/release/VicEmergencyMonitor.build/AlarmPlayer.swift.o",
         "/Users/nielswouters/Documents/GitHub/vicemg/.build/arm64-apple-macosx/release/VicEmergencyMonitor.build/App.swift.o",
         "/Users/nielswouters/Documents/GitHub/vicemg/.build/arm64-apple-macosx/release/VicEmergencyMonitor.build/AppSettings.swift.o",
         "/Users/nielswouters/Documents/GitHub/vicemg/.build/arm64-apple-macosx/release/VicEmergencyMonitor.build/IncidentFetcher.swift.o",
         "/Users/nielswouters/Documents/GitHub/vicemg/.build/arm64-apple-macosx/release/VicEmergencyMonitor.build/IncidentModels.swift.o",
         "/Users/nielswouters/Documents/GitHub/vicemg/.build/arm64-apple-macosx/release/VicEmergencyMonitor.build/LocationManager.swift.o",
         "/Users/nielswouters/Documents/GitHub/vicemg/.build/arm64-apple-macosx/release/VicEmergencyMonitor.build/NearbyAlertManager.swift.o",
+        "/Users/nielswouters/Documents/GitHub/vicemg/.build/arm64-apple-macosx/release/VicEmergencyMonitor.build/NotificationImageRenderer.swift.o",
         "/Users/nielswouters/Documents/GitHub/vicemg/.build/arm64-apple-macosx/release/VicEmergencyMonitor.build/NotificationManager.swift.o",
         "/Users/nielswouters/Documents/GitHub/vicemg/.build/arm64-apple-macosx/release/VicEmergencyMonitor.build/ContentView.swift.o",
         "/Users/nielswouters/Documents/GitHub/vicemg/.build/arm64-apple-macosx/release/VicEmergencyMonitor.build/IncidentRow.swift.o",
@@ -135,6 +145,10 @@
       "outputs" : [
         {
           "kind" : "file",
+          "name" : "/Users/nielswouters/Documents/GitHub/vicemg/.build/arm64-apple-macosx/release/VicEmergencyMonitor.build/AlarmPlayer.swift.o"
+        },
+        {
+          "kind" : "file",
           "name" : "/Users/nielswouters/Documents/GitHub/vicemg/.build/arm64-apple-macosx/release/VicEmergencyMonitor.build/App.swift.o"
         },
         {
@@ -156,6 +170,10 @@
         {
           "kind" : "file",
           "name" : "/Users/nielswouters/Documents/GitHub/vicemg/.build/arm64-apple-macosx/release/VicEmergencyMonitor.build/NearbyAlertManager.swift.o"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/nielswouters/Documents/GitHub/vicemg/.build/arm64-apple-macosx/release/VicEmergencyMonitor.build/NotificationImageRenderer.swift.o"
         },
         {
           "kind" : "file",
@@ -184,12 +202,14 @@
       ],
       "prepareForIndexing" : false,
       "sources" : [
+        "/Users/nielswouters/Documents/GitHub/vicemg/Sources/VicEmergencyMonitor/AlarmPlayer.swift",
         "/Users/nielswouters/Documents/GitHub/vicemg/Sources/VicEmergencyMonitor/App.swift",
         "/Users/nielswouters/Documents/GitHub/vicemg/Sources/VicEmergencyMonitor/AppSettings.swift",
         "/Users/nielswouters/Documents/GitHub/vicemg/Sources/VicEmergencyMonitor/IncidentFetcher.swift",
         "/Users/nielswouters/Documents/GitHub/vicemg/Sources/VicEmergencyMonitor/IncidentModels.swift",
         "/Users/nielswouters/Documents/GitHub/vicemg/Sources/VicEmergencyMonitor/LocationManager.swift",
         "/Users/nielswouters/Documents/GitHub/vicemg/Sources/VicEmergencyMonitor/NearbyAlertManager.swift",
+        "/Users/nielswouters/Documents/GitHub/vicemg/Sources/VicEmergencyMonitor/NotificationImageRenderer.swift",
         "/Users/nielswouters/Documents/GitHub/vicemg/Sources/VicEmergencyMonitor/NotificationManager.swift",
         "/Users/nielswouters/Documents/GitHub/vicemg/Sources/VicEmergencyMonitor/Views/ContentView.swift",
         "/Users/nielswouters/Documents/GitHub/vicemg/Sources/VicEmergencyMonitor/Views/IncidentRow.swift",
@@ -211,12 +231,14 @@
       "-package-name",
       "vicemg",
       "-c",
+      "/Users/nielswouters/Documents/GitHub/vicemg/Sources/VicEmergencyMonitor/AlarmPlayer.swift",
       "/Users/nielswouters/Documents/GitHub/vicemg/Sources/VicEmergencyMonitor/App.swift",
       "/Users/nielswouters/Documents/GitHub/vicemg/Sources/VicEmergencyMonitor/AppSettings.swift",
       "/Users/nielswouters/Documents/GitHub/vicemg/Sources/VicEmergencyMonitor/IncidentFetcher.swift",
       "/Users/nielswouters/Documents/GitHub/vicemg/Sources/VicEmergencyMonitor/IncidentModels.swift",
       "/Users/nielswouters/Documents/GitHub/vicemg/Sources/VicEmergencyMonitor/LocationManager.swift",
       "/Users/nielswouters/Documents/GitHub/vicemg/Sources/VicEmergencyMonitor/NearbyAlertManager.swift",
+      "/Users/nielswouters/Documents/GitHub/vicemg/Sources/VicEmergencyMonitor/NotificationImageRenderer.swift",
       "/Users/nielswouters/Documents/GitHub/vicemg/Sources/VicEmergencyMonitor/NotificationManager.swift",
       "/Users/nielswouters/Documents/GitHub/vicemg/Sources/VicEmergencyMonitor/Views/ContentView.swift",
       "/Users/nielswouters/Documents/GitHub/vicemg/Sources/VicEmergencyMonitor/Views/IncidentRow.swift",
@@ -292,6 +314,10 @@
         },
         {
           "kind" : "file",
+          "name" : "/Users/nielswouters/Documents/GitHub/vicemg/Sources/VicEmergencyMonitor/AlarmPlayer.swift"
+        },
+        {
+          "kind" : "file",
           "name" : "/Users/nielswouters/Documents/GitHub/vicemg/Sources/VicEmergencyMonitor/App.swift"
         },
         {
@@ -313,6 +339,10 @@
         {
           "kind" : "file",
           "name" : "/Users/nielswouters/Documents/GitHub/vicemg/Sources/VicEmergencyMonitor/NearbyAlertManager.swift"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/nielswouters/Documents/GitHub/vicemg/Sources/VicEmergencyMonitor/NotificationImageRenderer.swift"
         },
         {
           "kind" : "file",
@@ -346,6 +376,10 @@
         },
         {
           "kind" : "file",
+          "name" : "/Users/nielswouters/Documents/GitHub/vicemg/.build/arm64-apple-macosx/release/VicEmergencyMonitor.build/AlarmPlayer.swift.o"
+        },
+        {
+          "kind" : "file",
           "name" : "/Users/nielswouters/Documents/GitHub/vicemg/.build/arm64-apple-macosx/release/VicEmergencyMonitor.build/App.swift.o"
         },
         {
@@ -375,6 +409,10 @@
         {
           "kind" : "file",
           "name" : "/Users/nielswouters/Documents/GitHub/vicemg/.build/arm64-apple-macosx/release/VicEmergencyMonitor.build/NearbyAlertManager.swift.o"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/nielswouters/Documents/GitHub/vicemg/.build/arm64-apple-macosx/release/VicEmergencyMonitor.build/NotificationImageRenderer.swift.o"
         },
         {
           "kind" : "file",

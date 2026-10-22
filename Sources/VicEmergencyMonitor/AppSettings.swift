@@ -11,6 +11,10 @@ final class AppSettings: ObservableObject {
     /// Empty set means "show all categories".
     @Published var enabledCategories: Set<String> { didSet { save() } }
     @Published var keepOnTop: Bool { didSet { save() } }
+    @Published var alarmEnabled: Bool { didSet { save() } }
+    /// When true, the siren only sounds for official warnings and active fires;
+    /// other new nearby incidents get a normal notification sound instead.
+    @Published var alarmOnlyForSevere: Bool { didSet { save() } }
 
     private let defaults = UserDefaults.standard
 
@@ -24,6 +28,8 @@ final class AppSettings: ObservableObject {
         refreshIntervalSeconds = (d.object(forKey: "refreshIntervalSeconds") as? Double) ?? 60
         enabledCategories = Set((d.array(forKey: "enabledCategories") as? [String]) ?? [])
         keepOnTop = (d.object(forKey: "keepOnTop") as? Bool) ?? false
+        alarmEnabled = (d.object(forKey: "alarmEnabled") as? Bool) ?? true
+        alarmOnlyForSevere = (d.object(forKey: "alarmOnlyForSevere") as? Bool) ?? true
     }
 
     private func save() {
@@ -35,5 +41,7 @@ final class AppSettings: ObservableObject {
         defaults.set(refreshIntervalSeconds, forKey: "refreshIntervalSeconds")
         defaults.set(Array(enabledCategories), forKey: "enabledCategories")
         defaults.set(keepOnTop, forKey: "keepOnTop")
+        defaults.set(alarmEnabled, forKey: "alarmEnabled")
+        defaults.set(alarmOnlyForSevere, forKey: "alarmOnlyForSevere")
     }
 }

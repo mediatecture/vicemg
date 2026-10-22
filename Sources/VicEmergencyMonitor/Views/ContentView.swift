@@ -90,13 +90,13 @@ struct ContentView: View {
             }
         }
         .onChange(of: fetcher.lastUpdated) { _ in
-            alertManager.evaluate(filtered)
+            alertManager.evaluate(filtered, origin: effectiveCoordinate, settings: settings)
         }
         .onChange(of: settings.radiusKm) { _ in
-            alertManager.evaluate(filtered)
+            alertManager.evaluate(filtered, origin: effectiveCoordinate, settings: settings)
         }
         .onChange(of: settings.enabledCategories) { _ in
-            alertManager.evaluate(filtered)
+            alertManager.evaluate(filtered, origin: effectiveCoordinate, settings: settings)
         }
     }
 

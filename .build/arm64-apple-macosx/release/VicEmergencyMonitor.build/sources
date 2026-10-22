@@ -1,9 +1,11 @@
+/Users/nielswouters/Documents/GitHub/vicemg/Sources/VicEmergencyMonitor/AlarmPlayer.swift
 /Users/nielswouters/Documents/GitHub/vicemg/Sources/VicEmergencyMonitor/App.swift
 /Users/nielswouters/Documents/GitHub/vicemg/Sources/VicEmergencyMonitor/AppSettings.swift
 /Users/nielswouters/Documents/GitHub/vicemg/Sources/VicEmergencyMonitor/IncidentFetcher.swift
 /Users/nielswouters/Documents/GitHub/vicemg/Sources/VicEmergencyMonitor/IncidentModels.swift
 /Users/nielswouters/Documents/GitHub/vicemg/Sources/VicEmergencyMonitor/LocationManager.swift
 /Users/nielswouters/Documents/GitHub/vicemg/Sources/VicEmergencyMonitor/NearbyAlertManager.swift
+/Users/nielswouters/Documents/GitHub/vicemg/Sources/VicEmergencyMonitor/NotificationImageRenderer.swift
 /Users/nielswouters/Documents/GitHub/vicemg/Sources/VicEmergencyMonitor/NotificationManager.swift
 /Users/nielswouters/Documents/GitHub/vicemg/Sources/VicEmergencyMonitor/Views/ContentView.swift
 /Users/nielswouters/Documents/GitHub/vicemg/Sources/VicEmergencyMonitor/Views/IncidentRow.swift

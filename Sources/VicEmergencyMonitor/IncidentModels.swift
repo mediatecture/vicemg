@@ -71,6 +71,31 @@ struct EventProperties: Decodable {
         let severity: String?
         let event: String?
     }
+
+    private enum CodingKeys: String, CodingKey {
+        case id, feedType, category1, category2, status, location, name, action, updated, sizeFmt, cap
+    }
+
+    /// The feed isn't consistent about types (e.g. `id` is sometimes a number),
+    /// so only `id` and `feedType` are required and everything else is best-effort.
+    init(from decoder: Decoder) throws {
+        let c = try decoder.container(keyedBy: CodingKeys.self)
+        if let s = try? c.decode(String.self, forKey: .id) {
+            id = s
+        } else {
+            id = String(try c.decode(Int.self, forKey: .id))
+        }
+        feedType = try c.decode(String.self, forKey: .feedType)
+        category1 = try? c.decodeIfPresent(String.self, forKey: .category1)
+        category2 = try? c.decodeIfPresent(String.self, forKey: .category2)
+        status = try? c.decodeIfPresent(String.self, forKey: .status)
+        location = try? c.decodeIfPresent(String.self, forKey: .location)
+        name = try? c.decodeIfPresent(String.self, forKey: .name)
+        action = try? c.decodeIfPresent(String.self, forKey: .action)
+        updated = try? c.decodeIfPresent(String.self, forKey: .updated)
+        sizeFmt = try? c.decodeIfPresent(String.self, forKey: .sizeFmt)
+        cap = try? c.decodeIfPresent(Cap.self, forKey: .cap)
+    }
 }
 
 /// Domain model combining a feature's coordinate with its properties.
@@ -88,6 +113,7 @@ struct Incident: Identifiable, Hashable {
     let action: String?
     let updated: String?
     let sizeFmt: String?
+    let event: String?
     let coordinate: CLLocationCoordinate2D
 
     static func == (lhs: Incident, rhs: Incident) -> Bool { lhs.id == rhs.id }
@@ -106,7 +132,58 @@ struct Incident: Identifiable, Hashable {
         self.action = p.action
         self.updated = p.updated
         self.sizeFmt = p.sizeFmt
+        self.event = p.cap?.event
         self.coordinate = coordinate
+    }
+
+    enum Kind {
+        case fire, plannedBurn, treeDown, flood, wind, weather, road, building, other
+
+        var symbolName: String {
+            switch self {
+            case .fire: return "flame.fill"
+            case .plannedBurn: return "flame"
+            case .treeDown: return "tree.fill"
+            case .flood: return "drop.fill"
+            case .wind: return "wind"
+            case .weather: return "cloud.bolt.rain.fill"
+            case .road: return "car.fill"
+            case .building: return "building.2.fill"
+            case .other: return "exclamationmark.triangle.fill"
+            }
+        }
+
+        var emoji: String {
+            switch self {
+            case .fire: return "🔥"
+            case .plannedBurn: return "🌿"
+            case .treeDown: return "🌳"
+            case .flood: return "🌊"
+            case .wind: return "💨"
+            case .weather: return "⛈️"
+            case .road: return "🚗"
+            case .building: return "🏢"
+            case .other: return "⚠️"
+            }
+        }
+    }
+
+    /// What sort of emergency this is, for choosing an icon. Matches on the
+    /// feed's category/event wording, most specific first.
+    var kind: Kind {
+        let text = [category2, category1, event, name, action]
+            .compactMap { $0?.lowercased() }
+            .joined(separator: " ")
+        if text.contains("flood") { return .flood }
+        if text.contains("burn") { return .plannedBurn }
+        if text.contains("fire") { return .fire }
+        if text.contains("tree") { return .treeDown }
+        if text.contains("wind") { return .wind }
+        if text.contains("storm") || text.contains("thunder") || text.contains("weather")
+            || category1?.lowercased() == "met" || category2?.lowercased() == "met" { return .weather }
+        if text.contains("road") || text.contains("accident") || text.contains("rescue") { return .road }
+        if text.contains("building") { return .building }
+        return .other
     }
 
     var isOfficialWarning: Bool { feedType == "warning" }
@@ -174,10 +251,13 @@ struct Incident: Identifiable, Hashable {
         if isOfficialWarning {
             return category1 ?? "Warning"
         }
-        switch severity {
-        case .critical, .high: return "Active"
-        case .medium: return "Contained"
-        case .low: return "Minor"
+        let st = (status ?? "").lowercased()
+        if st.contains("going") || st.contains("responding") || st.contains("not controlled") {
+            return "Active"
         }
+        if st.contains("control") || st.contains("contain") {
+            return "Contained"
+        }
+        return "Minor"
     }
 }

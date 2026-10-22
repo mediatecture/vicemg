@@ -1,13 +1,14 @@
 import Foundation
+import CoreLocation
 
 /// Tracks which nearby incidents we've already notified about, so a notification
-/// only fires the first time an incident enters range — not on every poll.
+/// (and alarm) only fires the first time an incident enters range — not on every poll.
 @MainActor
 final class NearbyAlertManager: ObservableObject {
     private var notifiedIncidentIDs: Set<String> = []
     private var hasSeeded = false
 
-    func evaluate(_ nearby: [ContentView.FilteredIncident]) {
+    func evaluate(_ nearby: [ContentView.FilteredIncident], origin: CLLocationCoordinate2D?, settings: AppSettings) {
         let currentIDs = Set(nearby.map { $0.incident.id })
 
         guard hasSeeded else {
@@ -18,8 +19,17 @@ final class NearbyAlertManager: ObservableObject {
         }
 
         let newIDs = currentIDs.subtracting(notifiedIncidentIDs)
+        var soundAlarm = false
         for item in nearby where newIDs.contains(item.incident.id) {
-            NotificationManager.shared.notify(incident: item.incident, distanceKm: item.distanceKm)
+            let incident = item.incident
+            let isSevere = incident.isOfficialWarning || incident.severity >= .high
+            let alarm = settings.alarmEnabled && (!settings.alarmOnlyForSevere || isSevere)
+            soundAlarm = soundAlarm || alarm
+            // The siren replaces the default notification chime rather than stacking on it.
+            NotificationManager.shared.notify(incident: incident, distanceKm: item.distanceKm, origin: origin, playSound: !alarm)
+        }
+        if soundAlarm {
+            AlarmPlayer.shared.play()
         }
         notifiedIncidentIDs.formUnion(currentIDs)
     }

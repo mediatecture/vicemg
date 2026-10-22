@@ -99,6 +99,22 @@ struct SettingsView: View {
                 .padding(8)
             }
 
+            GroupBox("Alarm") {
+                VStack(alignment: .leading, spacing: 8) {
+                    Toggle("Play alarm sound when a new incident appears nearby", isOn: $settings.alarmEnabled)
+                    Toggle("Only for official warnings and active fires", isOn: $settings.alarmOnlyForSevere)
+                        .disabled(!settings.alarmEnabled)
+                    HStack {
+                        Button("Test alarm") { AlarmPlayer.shared.play() }
+                        Button("Stop") { AlarmPlayer.shared.stop() }
+                        Spacer()
+                        Button("Send test notification") { sendTestNotification() }
+                            .disabled(fetcher.incidents.isEmpty)
+                    }
+                }
+                .padding(8)
+            }
+
             GroupBox("Categories") {
                 VStack(alignment: .leading, spacing: 4) {
                     if categories.isEmpty {
@@ -125,6 +141,24 @@ struct SettingsView: View {
         }
         .padding(20)
         .frame(width: 420)
+    }
+
+    /// Sends a real-looking notification for the nearest current incident, so the
+    /// map thumbnail and icon can be previewed on demand.
+    private func sendTestNotification() {
+        let origin: CLLocationCoordinate2D? = settings.useDeviceLocation
+            ? locationManager.currentLocation
+            : CLLocationCoordinate2D(latitude: settings.manualLatitude, longitude: settings.manualLongitude)
+
+        func distanceKm(_ incident: Incident) -> Double? {
+            guard let origin else { return nil }
+            return CLLocation(latitude: origin.latitude, longitude: origin.longitude)
+                .distance(from: CLLocation(latitude: incident.coordinate.latitude, longitude: incident.coordinate.longitude)) / 1000
+        }
+
+        let nearest = fetcher.incidents.min { (distanceKm($0) ?? .greatestFiniteMagnitude) < (distanceKm($1) ?? .greatestFiniteMagnitude) }
+        guard let incident = nearest else { return }
+        NotificationManager.shared.notify(incident: incident, distanceKm: distanceKm(incident), origin: origin)
     }
 
     private var statusText: some View {
